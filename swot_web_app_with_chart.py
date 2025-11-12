@@ -3,7 +3,6 @@ import streamlit as st
 import plotly.graph_objects as go
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-from reportlab.platypus import Image
 import tempfile
 import os
 
@@ -62,11 +61,13 @@ st.write("**Weaknesses:** Internal factors that may hinder your success.")
 st.write("**Opportunities:** External conditions you can exploit for growth.")
 st.write("**Threats:** External challenges that could impact your progress.")
 
-# Export to PDF with radar chart image
+# Export to PDF with radar chart image using fig.to_image()
 if st.button("Export Analysis to PDF"):
-    # Save radar chart as image
+    # Save radar chart as image using to_image()
     chart_file = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
-    fig.write_image(chart_file.name)
+    img_bytes = fig.to_image(format="png")
+    with open(chart_file.name, "wb") as f:
+        f.write(img_bytes)
 
     # Create PDF
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
